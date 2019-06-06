@@ -1,0 +1,148 @@
+<ng-template #projectContent let-modal>
+  <form [formGroup]='projectForm' (ngSubmit)="onSubmitProject(projectForm)">
+    <div class="modal-header">
+      <h4 class="modal-title">Add New Project</h4>
+      <button type="button" class="close" aria-label="Close" (click)="dismissProjectModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-row">
+        <div class="col-md-12">
+          <label>Project name</label>
+          <input type="text" class="form-control {{ ProjectName?.errors?.required && projectForm.submitted ? 'is-invalid' : 'is-valid'}}" formControlName="ProjectName">
+          <div *ngIf="ProjectName?.errors?.required && projectForm.submitted" class="invalid-feedback">Project Name is required</div>
+          <!--<div class="invalid-feedback">
+            Please choose a username.
+          </div>-->
+        </div>
+
+        <div class="col-md-6 form-group">
+          <label>Start Date</label>
+          <div class="input-group">
+            <input type="text" class="form-control {{ ProjectStartDate?.errors?.required && projectForm.submitted ? 'is-invalid' : 'is-valid'}}" formControlName="ProjectStartDate" placeholder="yyyy-mm-dd" (document:click)="d.close();$event.stopPropagation();" (change)="onDateChange($event.target.value)" ngbDatepicker #d="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="d.toggle();$event.stopPropagation();" type="button"></button>
+            </div>
+            <div *ngIf="ProjectStartDate?.errors?.required && projectForm.submitted" class="invalid-feedback">Start Date is required</div>
+          </div>
+        </div>
+
+        <div class="col-md-6 form-group">
+          <label>End Date</label>
+          <div class="input-group">
+            <input class="form-control {{ ProjectEndDate?.errors?.required && projectForm.submitted ? 'is-invalid' : 'is-valid'}}" placeholder="yyyy-mm-dd" formControlName="ProjectEndDate" ngbDatepicker #d1="ngbDatepicker" (document:click)="d1.close();$event.stopPropagation();" (change)="onDateChange($event.target.value)">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="d1.toggle();$event.stopPropagation();" type="button"></button>
+            </div>
+            <div *ngIf="ProjectEndDate?.errors?.required && projectForm.submitted" class="invalid-feedback">End Date is required</div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <label>Project Description</label>
+          <ckeditor formControlName="ProjectDescription"
+                    [config]="ckeConfigProjectDescription"
+                    debounce="500"
+                    (change)="onChange($event)">
+          </ckeditor>
+          <!--<div *ngIf="myckeditor.invalid && myckeditor.touched" class="help-block">Required field.</div>-->
+        </div>
+        <div class="col-md-12" *ngIf="projectForm.get('Id').value > 0">
+          <label>Project Status</label>
+          <select formControlName="StatusId" class="form-control">
+            <option [value]="status.id" *ngFor="let status of StatusList" selected="(status.id == projectForm.get('Id').value) ? 'selected':null">{{status.statusName}}</option>
+          </select>
+        </div>
+
+        <!--<button class="btn btn-primary btn-sm btn-rounded right" (click)="generateNotification()">Notification</button>-->
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-primary btn-sm btn-rounded right" type="submit" [disabled]="projectForm.invalid">Submit form</button>
+      <button type="button" class="btn btn-light" (click)="closeProjectModal()">Close</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #projectTaskcontent let-modal>
+  <form [formGroup]='projectTaskForm' (ngSubmit)="onSubmitProjectTask(projectTaskForm)" class="modal-full">
+    <div class="modal-header">
+      <h4 class="modal-title">Add New Task</h4>
+      <button type="button" class="close" aria-label="Close" (click)="dismissProjectTaskModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" formControlName="Id" />
+      <input type="hidden" formControlName="ProjectId" />
+      <div class="form-row">
+        <div class="col-md-12">
+          <label>Task name</label>
+          <input type="text" class="form-control {{ TaskName?.errors?.required && projectTaskForm.submitted ? 'is-invalid' : 'is-valid'}}" formControlName="TaskName" required>
+          <div *ngIf="TaskName?.errors?.required && projectForm.submitted" class="invalid-feedback">Task Name is required</div>
+        </div>
+
+        <div class="col-md-12">
+          <label>Task Details</label>
+          <ckeditor formControlName="TaskDetail"
+                    [config]="ckeConfigTaskDetail"
+                    debounce="500">
+          </ckeditor>
+        </div>
+
+        <div class="col-md-12">
+          <label>Useful Links</label>
+          <ckeditor formControlName="UsefulLinks"
+                    [config]="ckeConfigUsefulLinks"
+                    debounce="500">
+          </ckeditor>
+        </div>
+
+        <div class="col-md-6 form-group">
+          <label>Start Date</label>
+          <div class="input-group">
+            <input type="text" formControlName="AssignedDate" dateFormat="dd-MM-yyyy" class="form-control {{ AssignedDate?.errors?.required && projectTaskForm.submitted ? 'is-invalid' : 'is-valid'}}" placeholder="yyyy-mm-dd" (document:click)="d.close();$event.stopPropagation();" (change)="onDateChange($event.target.value)" ngbDatepicker #d="ngbDatepicker" required>
+            <div class="input-group-append">
+              <!--<button class="btn btn-outline-secondary calendar" (click)="d.toggle();$event.stopPropagation();" type="button"></button>-->
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 form-group">
+          <label>End Date</label>
+          <div class="input-group">
+            <input id="EndDate" formControlName="EndDate" class="form-control {{ EndDate?.errors?.required && projectTaskForm.submitted ? 'is-invalid' : 'is-valid'}}" placeholder="yyyy-mm-dd" ngbDatepicker #d1="ngbDatepicker" (document:click)="d1.close();$event.stopPropagation();" required>
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="d1.toggle();$event.stopPropagation();" type="button"></button>
+            </div>
+            <div *ngIf="EndDate?.errors?.required && projectTaskForm.submitted" class="invalid-feedback">End Date is required</div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <label>Comments</label>
+          <ckeditor formControlName="Comments"
+                    [config]="ckeConfigComments"
+                    debounce="500">
+          </ckeditor>
+        </div>
+
+        <div class="col-md-12" *ngIf="projectTaskForm.get('Id').value > 0">
+          <label>Task Status</label>
+          <select formControlName="StatusId" class="form-control">
+            <option [value]="status.id" *ngFor="let status of StatusList" selected="(status.id == projectForm.get('Id').value) ? 'selected':null">{{status.statusName}}</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-primary btn-sm btn-rounded right" type="submit" [disabled]="projectTaskForm.invalid">Submit form</button>
+      <button type="button" class="btn btn-light" (click)="closeProjectTaskModal()">Close</button>
+    </div>
+  </form>
+</ng-template>

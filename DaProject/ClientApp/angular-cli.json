@@ -1,0 +1,84 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "DaProject"
+  },
+  "apps": [
+    {
+      "": "",
+      "root": "src",
+      "outDir": "dist",
+      "assets": [
+        "assets"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "app",
+      "styles": [
+        "./assets/css/linearicons.css",
+        "./assets/css/font-awesome.min.css",
+        "./assets/css/bootstrap.css",
+        "./assets/css/magnific-popup.css",
+        "./assets/css/nice-select.css",
+        "./assets/css/animate.min.css",
+        "./assets/css/owl.carousel.css",
+        "./assets/css/main.css",
+        "./styles.css"
+      ],
+      "scripts": [
+        "./assets/js/vendor/jquery-2.2.4.min.js",
+        "./assets/js/vendor/bootstrap.min.js",
+        "./assets/js/easing.min.js",
+        "./assets/js/hoverIntent.js",
+        "./assets/js/superfish.min.js",
+        "./assets/js/jquery.ajaxchimp.min.js",
+        "./assets/js/jquery.magnific-popup.min.js",
+        "./assets/js/owl.carousel.min.js",
+        "./assets/js/jquery.nice-select.min.js",
+        "./assets/js/waypoints.min.js",
+        "./assets/js/mail-script.js",
+        "./assets/js/main.js"
+      ],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    }
+  ],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "project": "src/tsconfig.app.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "src/tsconfig.spec.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json",
+      "exclude": "**/node_modules/**"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "styleExt": "css",
+    "component": {},
+    "build": {
+      "progress": true
+    }
+  }
+}
